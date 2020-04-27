@@ -1,0 +1,14 @@
+{
+  "name": "dex-integration",
+  "version": "1.0.0",
+  "description": "An tiny integration example demonstrating how to place spread orders on Gnosis Protocol from an external price feed",
+  "author": "ben@gnosis.io",
+  "license": "MIT",
+  "dependencies": {
+    "@gnosis.pm/dex-contracts": "^0.2.12",
+    "@gnosis.pm/owl-token": "^3.1.0",
+    "@gnosis.pm/solidity-data-structures": "^1.3.4",
+    "@truffle/contract": "^4.2.2",
+    "synthetix-js": "^2.21.9"
+  }
+}
