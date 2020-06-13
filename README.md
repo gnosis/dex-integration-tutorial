@@ -60,3 +60,17 @@ To continue in this direction please checkout the `local_dev` branch of the tuto
 ```sh
 git checkout local_dev
 ```
+
+We will be working with the localhost "ganache". To run a your local blockchain, in a separate terminal, run
+
+```sh
+ganache-cli --gasLimit 8e6
+```
+
+The reason for the explicit gas limit is that the `BatchExchange` requires just under 8 million gas to migrate/deploy to the network.
+
+Once this is running we can test our local setup via
+
+```sh
+truffle test
+```
