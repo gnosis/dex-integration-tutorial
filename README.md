@@ -6,7 +6,7 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
 
 - Truffle
 
-## Project Initialization and Network Configuration
+## [Optional] Project Initialization and Network Configuration
 
 This section is intended to be a first step when building a new project from scratch. If you would prefer to start from a preconfigured environment, feel free to skip ahead to the next section.
 
@@ -26,4 +26,39 @@ Furthermore, you will likely have to provide your own `INFURA_KEY`
 
 Note that, if you plan to be experimenting with a locally hosted development network, you will need to install additional "devDepencencies" to mirgrate the `BatchExchange` Smart Contracts. This will be covered in detail once we have successfully confirmed our ability to interact with the existing mainnet smart contracts.
 
-## First Interactions with Batch Exchange
+## First Interaction with Batch Exchange
+
+Assuming you were successful with optionally configuring your own project from the section above, we will continue here from a pre-configured environment obtained and installed as follows:
+
+```sh
+git clone git@github.com:bh2smith/dex-integration-tutorial.git
+yarn install
+```
+
+This should put us in the same place as has having completed the project initialization steps independantly. We are now prepared to start scripting interactions with the Gnosis Protocol. To test this run the `exchange_interaction` script via
+
+```sh
+truffle exec scripts/exchange_interaction.js --network rinkeby
+```
+
+Which simply aquires the BatchExchange contract deployed at the appropriate address and prints the current Batch Index.
+
+The most important lines used in this script are the by far the import statements.
+
+```js
+const Contract = require("@truffle/contract")
+const BatchExchange = Contract(
+  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
+)
+BatchExchange.setProvider(web3.currentProvider)
+```
+
+
+
+## [Optional] Testing Locally (i.e. in Ganache)
+
+To continue in this direction please checkout the `local_dev` branch of the tutorial repo.
+
+```sh
+git checkout local_dev
+```
