@@ -4,7 +4,9 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
 
 ## Requirements
 
-- Truffle
+- [Truffle](https://www.trufflesuite.com/docs/truffle/getting-started/installation)
+- [Node](https://nodejs.org/en/)
+- [Yarn](https://yarnpkg.com/) or alternatily you could use the node package manager `npm` included with Node.
 
 ## [Optional] Project Initialization and Network Configuration
 
@@ -43,7 +45,7 @@ truffle exec scripts/exchange_interaction.js --network rinkeby
 
 Which simply aquires the BatchExchange contract deployed at the appropriate address and prints the current Batch Index.
 
-The most important lines used in this script are the by far the import statements.
+The most important lines used in this script are the following few import statements for acquiring the Batch Exchange contract artifacts and setting the network provider.
 
 ```js
 const Contract = require("@truffle/contract")
@@ -53,7 +55,24 @@ const BatchExchange = Contract(
 BatchExchange.setProvider(web3.currentProvider)
 ```
 
+These lines are seen at the top of our [exchange_interaction.js](exchange_interaction.js) script that we will use for testing.
 
+To run this script, from within the project directory, execute
+
+```sh
+truffle exec scripts/exchange_interaction.js --network rinkeby
+```
+
+and observe the following logs:
+
+```
+Using network 'rinkeby'.
+
+Aquired Batch Exchange 0xC576eA7bd102F7E476368a5E98FA455d1Ea34dE2
+Current Batch 5308007
+```
+
+This means we have actually acquired batch Id from the samrt contract directly and we are ready to start making some more involved interactions!
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 
