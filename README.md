@@ -74,6 +74,23 @@ Current Batch 5308007
 
 This means we have actually acquired batch Id from the samrt contract directly and we are ready to start making some more involved interactions!
 
+### Fetch Token Info
+
+As a second simple interaction with the exchange, we can fetch token information for those registered. This script requires a few additional dev-tweaks in order to have access to `ECR20Detailed` token contract artifacts.
+
+We will need to install `@openzeppelin/contracts@2.5.1` and import `ERC20Detailed` so that is it included in truffle migrations. To do this from scratch 
+
+```sh
+yarn add @openzeppelin/contracts@2.5.1
+```
+
+and create a new file [contracts/Dependencies.sol](contracts/Dependencies.sol) importing `ERC20Detailed` contract artifact. Then run the following script.
+
+```sh
+truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
+```
+
+
 ## [Optional] Testing Locally (i.e. in Ganache)
 
 To continue in this direction please checkout the `local_dev` branch of the tutorial repo.

@@ -10,7 +10,6 @@ const argv = require("yargs")
   .option("tokenIds", {
     type: "string",
     describe: "Token Ids whose info should be fetched.",
-    demandOption: true,
     coerce: (str) => {
       return str.split(",").map((o) => parseInt(o))
     },
@@ -22,12 +21,17 @@ module.exports = async (callback) => {
   try {
     const exchange = await BatchExchange.deployed()
 
-    const numTokens = await exchange.numTokens.call()
+    const numTokens = (await exchange.numTokens.call()).toNumber()
     console.log(`Exchange has ${numTokens} registered tokens`)
 
+    const tokens =
+      argv.tokenIds ||
+      Array(numTokens)
+        .fill(0)
+        .map((_, i) => i)
     const tokenInfo = await fetchTokenInfoFromExchange(
       exchange,
-      argv.tokenIds,
+      tokens,
       artifacts
     )
 
