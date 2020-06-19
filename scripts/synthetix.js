@@ -11,15 +11,15 @@ module.exports = async (callback) => {
     const snxjs = new SynthetixJs({ networkId: networkId })
     const batchExchange = await getBatchExchange(web3)
 
-    const sETH = sETHByNetwork[networkId]
-    const sUSD = sUSDByNetwork[networkId]
+    // const sETH = sETHByNetwork[networkId]
+    // const sUSD = sUSDByNetwork[networkId]
 
     // Both of these hardcoded tokens are assumed to have 18 decimal places.
     // We "trust" that this will always be the case although it seems
     // that synthetix reserves the authority to upgrade their token
     // This could mean issuing a new one with a different number of decimals.
-    const sETHKey = ethers.utils.formatBytes32String("sETH")
-    const sUSDKey = ethers.utils.formatBytes32String("sUSD")
+    const sETHKey = snxjs.sETH.currencyKey()
+    const sUSDKey = snxjs.sUSD.currencyKey()
 
     // Compute Rates and Fees based on price of sETH.
     // Note that sUSD always has a price of 1 within synthetix protocol.

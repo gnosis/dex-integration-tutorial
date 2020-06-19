@@ -19,6 +19,7 @@ truffle init
 yarn add @truffle/contract
 yarn add @gnosis.pm/dex-contracts
 [optional] yarn add @gnosis.pm/util-contracts
+[optional] yarn add @openzeppelin/contracts@2.5.1
 ```
 
 Make sure that you have a valid (truffle configuration)[https://www.trufflesuite.com/docs/truffle/reference/configuration] for the network you intend on interacting with.
@@ -95,6 +96,17 @@ At this point, we should be easily able to use our existing toolset to script an
 TODO: write deposit and place_order scripts (will need to write amount formatter for ERC20 with special decimals).
 
 ## Synthetix Liquidity Bot
+
+In order to demonstrate an integration between two exchanges, we will make an example out of the Synthetix Protocol using their NPM package [synthetix-js](https://www.npmjs.com/package/synthetix-js) whose docs are avaialble [here](https://docs.synthetix.io/libraries/synthetix-js/)
+
+To get started, we construct a simple interaction with their protocol in which we fetch the price `sETH` from their onchain price oracle (chainlink). This interaction is contained within [scripts/synthetix_interaction.js](scripts/synthetix_interaction.js)
+
+To test our tiny interaction run
+
+```sh
+npx truffle exec scripts/synthetix_interaction.js --network mainnet
+```
+
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 
