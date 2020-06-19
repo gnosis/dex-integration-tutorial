@@ -206,12 +206,12 @@
     "@ethersproject/rlp" "^5.0.0"
     "@ethersproject/signing-key" "^5.0.0"
 
-"@gnosis.pm/dex-contracts@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/dex-contracts/-/dex-contracts-0.3.2.tgz#a0b1b9991c5823dfbd82ce07c6e20bc87c3d5f00"
-  integrity sha512-eIbxRkBQUF1yHr8qZhpMkwM1L/IMLFL1O46mcSGshyE9kRFD2KLR6EG6NRJV9cYfMH775F40rzuqNjftyTvDMA==
+"@gnosis.pm/dex-contracts@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/dex-contracts/-/dex-contracts-0.4.0.tgz#a7edd147d0426ec6f71d3f4ce8e1488e8e6917cb"
+  integrity sha512-PjHzCUXG7+O+XHT9qfcKZnA7Dfqp3gu5LdIFt4x+eoDWL3h3ddC2LIIQ46qfO9Potq4nnq1iilQ76U9EvHHOmw==
   dependencies:
-    bn.js "^5.1.1"
+    bn.js "^5.1.2"
 
 "@gnosis.pm/util-contracts@^2.0.6":
   version "2.0.6"
@@ -274,6 +274,11 @@
   version "4.72.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-4.72.0.tgz#43df23af013ad1135407e5cf33ca6e4c4c7708d5"
   integrity sha512-o+TYF8vBcyySRsb2kqBDv/KMeme8a2nwWoG+lAWzbDmWfb2/MrVWYCVYDYvjXdSoI/Cujqy1i0gIDrkdxa9chA==
+
+"@openzeppelin/contracts@=2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.1.tgz#c76e3fc57aa224da3718ec351812a4251289db31"
+  integrity sha512-qIy6tLx8rtybEsIOAlrM4J/85s2q2nPkDqj/Rx46VakBZ0LwtFhXIVub96LXHczQX0vaqmAueDqNPXtbSXSaYQ==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -1290,7 +1295,7 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.0, bn.js@^4.11.1, bn.js@^4.11.6, bn.js@^
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
   integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
 
-bn.js@^5.0.0, bn.js@^5.1.1:
+bn.js@^5.0.0, bn.js@^5.1.1, bn.js@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.2.tgz#c9686902d3c9a27729f43ab10f9d79c2004da7b0"
   integrity sha512-40rZaf3bUNKTVYu9sIeeEGOg7g14Yvnj9kH7b50EiwX0Q7A6umbvfI5tvHaOERH0XigqKkfLkFQxzb4e6CIXnA==
