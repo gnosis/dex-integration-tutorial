@@ -1,12 +1,8 @@
-const Contract = require("@truffle/contract")
-const BatchExchange = Contract(
-  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-)
-BatchExchange.setProvider(web3.currentProvider)
+const { getBatchExchange } = require("./util")
 
 module.exports = async (callback) => {
   try {
-    const exchange = await BatchExchange.deployed()
+    const exchange = await getBatchExchange(web3)
     console.log("Aquired Batch Exchange", exchange.address)
 
     // Insert your code here!

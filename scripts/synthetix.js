@@ -1,15 +1,15 @@
 const { SynthetixJs } = require("synthetix-js")
 const ethers = require("ethers")
-const { getExchange } = require("../utils/trading_strategy_helpers")(web3, artifacts)
+const { getBatchExchange } = require("./util")
 
-module.exports = async callback => {
+module.exports = async (callback) => {
   try {
     const networkId = await web3.eth.net.getId()
     const account = (await web3.eth.getAccounts())[0]
     console.log("Using account", account)
 
     const snxjs = new SynthetixJs({ networkId: networkId })
-    const exchange = await getExchange(web3)
+    const batchExchange = await getBatchExchange(web3)
 
     const sETH = sETHByNetwork[networkId]
     const sUSD = sUSDByNetwork[networkId]
@@ -28,8 +28,16 @@ module.exports = async callback => {
     console.log("sETH Price", snxjs.utils.formatEther(exchangeRate))
 
     // Using synthetix's fees, and formatting their return values with their tools, plus parseFloat.
-    const sETHTosUSDFee = parseFloat(snxjs.utils.formatEther(await snxjs.Exchanger.feeRateForExchange(sETHKey, sUSDKey)))
-    const sUSDTosETHFee = parseFloat(snxjs.utils.formatEther(await snxjs.Exchanger.feeRateForExchange(sUSDKey, sETHKey)))
+    const sETHTosUSDFee = parseFloat(
+      snxjs.utils.formatEther(
+        await snxjs.Exchanger.feeRateForExchange(sETHKey, sUSDKey)
+      )
+    )
+    const sUSDTosETHFee = parseFloat(
+      snxjs.utils.formatEther(
+        await snxjs.Exchanger.feeRateForExchange(sUSDKey, sETHKey)
+      )
+    )
 
     // Compute buy-sell amounts based on unlimited orders with rates from above.
     const [buyETHAmount, sellSUSDAmount] = getUnlimitedOrderAmounts(
@@ -48,17 +56,25 @@ module.exports = async callback => {
 
     // Fetch auction index and declare validity interval for orders.
     // Note that order validity interval is inclusive on both sides.
-    const batchId = (await exchange.getCurrentBatchId.call()).toNumber()
+    const batchId = (await batchExchange.getCurrentBatchId.call()).toNumber()
     const validFroms = Array(2).fill(batchId)
     const validTos = Array(2).fill(batchId)
 
     // Avoid querying exchange by tokenAddress for fixed tokenId
-    const buyTokens = [sETH, sUSD].map(token => token.exchangeId)
-    const sellTokens = [sUSD, sETH].map(token => token.exchangeId)
+    const buyTokens = [sETH, sUSD].map((token) => token.exchangeId)
+    const sellTokens = [sUSD, sETH].map((token) => token.exchangeId)
 
-    await exchange.placeValidFromOrders(buyTokens, sellTokens, validFroms, validTos, buyAmounts, sellAmounts, {
-      from: account,
-    })
+    await batchExchange.placeValidFromOrders(
+      buyTokens,
+      sellTokens,
+      validFroms,
+      validTos,
+      buyAmounts,
+      sellAmounts,
+      {
+        from: account,
+      }
+    )
     callback()
   } catch (error) {
     callback(error)

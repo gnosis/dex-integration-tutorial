@@ -86,6 +86,16 @@ and create a new file [contracts/Dependencies.sol](contracts/Dependencies.sol) i
 truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
 ```
 
+This example also demonstrates how we can use `kwargs` to easily pass and parse arguments into our script.
+
+## Deposit and Place Orders on Batch Exchange
+
+At this point, we should be easily able to use our existing toolset to script an order placement on `BatchExchange`.
+
+TODO: write deposit and place_order scripts (will need to write amount formatter for ERC20 with special decimals).
+
+## Synthetix Liquidity Bot
+
 ## [Optional] Testing Locally (i.e. in Ganache)
 
 To continue in this direction please checkout the `local_dev` branch of the tutorial repo.
