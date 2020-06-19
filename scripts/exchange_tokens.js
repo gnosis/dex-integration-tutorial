@@ -1,9 +1,4 @@
-const Contract = require("@truffle/contract")
-const BatchExchange = Contract(
-  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-)
-BatchExchange.setProvider(web3.currentProvider)
-
+const { getBatchExchange } = require("./util")
 const { fetchTokenInfoFromExchange } = require("@gnosis.pm/dex-contracts")
 
 const argv = require("yargs")
@@ -19,11 +14,12 @@ const argv = require("yargs")
 
 module.exports = async (callback) => {
   try {
-    const exchange = await BatchExchange.deployed()
+    const exchange = await getBatchExchange(web3)
 
     const numTokens = (await exchange.numTokens.call()).toNumber()
     console.log(`Exchange has ${numTokens} registered tokens`)
 
+    // Use the token list provided or use range(0, numTokens) to fetch all
     const tokens =
       argv.tokenIds ||
       Array(numTokens)

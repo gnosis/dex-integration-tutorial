@@ -37,27 +37,9 @@ git clone git@github.com:bh2smith/dex-integration-tutorial.git
 yarn install
 ```
 
-This should put us in the same place as has having completed the project initialization steps independantly. We are now prepared to start scripting interactions with the Gnosis Protocol. To test this run the `exchange_interaction` script via
-
-```sh
-truffle exec scripts/exchange_interaction.js --network rinkeby
-```
-
-Which simply aquires the BatchExchange contract deployed at the appropriate address and prints the current Batch Index.
-
-The most important lines used in this script are the following few import statements for acquiring the Batch Exchange contract artifacts and setting the network provider.
-
-```js
-const Contract = require("@truffle/contract")
-const BatchExchange = Contract(
-  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-)
-BatchExchange.setProvider(web3.currentProvider)
-```
-
-These lines are seen at the top of our [exchange_interaction.js](exchange_interaction.js) script that we will use for testing.
-
-To run this script, from within the project directory, execute
+This should put us in the same place as has having completed the project initialization steps independantly.
+We are now prepared to start scripting interactions with the Gnosis Protocol.
+To test this run the `exchange_interaction` script via
 
 ```sh
 truffle exec scripts/exchange_interaction.js --network rinkeby
@@ -72,13 +54,27 @@ Aquired Batch Exchange 0xC576eA7bd102F7E476368a5E98FA455d1Ea34dE2
 Current Batch 5308007
 ```
 
-This means we have actually acquired batch Id from the samrt contract directly and we are ready to start making some more involved interactions!
+This script simply aquires the BatchExchange contract deployed at the appropriate network and prints the current batch index.
+
+A few important lines used throughout such integration are are the following import statements used for acquiring the Batch Exchange contract artifacts according to the correct network.
+
+```js
+const Contract = require("@truffle/contract")
+const BatchExchange = Contract(
+  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
+)
+BatchExchange.setProvider(web3.currentProvider)
+```
+
+These imports have been made more accessible in the form of a function `getBatchExchange` in [scripts/util.js](scripts/util.js) and will be used from now on throughout this tutorial.
+
+Now that we have successfully acquired the BatchExchange contract artifact, we are ready to start making some more involved interactions!
 
 ### Fetch Token Info
 
 As a second simple interaction with the exchange, we can fetch token information for those registered. This script requires a few additional dev-tweaks in order to have access to `ECR20Detailed` token contract artifacts.
 
-We will need to install `@openzeppelin/contracts@2.5.1` and import `ERC20Detailed` so that is it included in truffle migrations. To do this from scratch 
+We will need to install `@openzeppelin/contracts@2.5.1` and import `ERC20Detailed` so that is it included in truffle migrations. To do this from scratch
 
 ```sh
 yarn add @openzeppelin/contracts@2.5.1
@@ -89,7 +85,6 @@ and create a new file [contracts/Dependencies.sol](contracts/Dependencies.sol) i
 ```sh
 truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
 ```
-
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 
