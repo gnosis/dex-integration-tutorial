@@ -20,6 +20,7 @@ module.exports = async (callback) => {
     console.log(`Exchange has ${numTokens} registered tokens`)
 
     // Use the token list provided or use range(0, numTokens) to fetch all
+    // TODO - upgrade dex-contracts node module with improved token fetching.
     const tokens =
       argv.tokenIds ||
       Array(numTokens)
