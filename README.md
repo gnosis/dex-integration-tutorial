@@ -145,16 +145,14 @@ The docker file is a very simple basic instance of this project having a bash en
 To build the image, from within the project root
 
 ```sh
-docker build -t synthetix-bot .
-docker run -e INFURA_KEY=64f4b49c1b2a4af486d92c63556e53f9 -e PK=$YOUR_PRIVATE_KEY -t synthetix-bot:latest "truffle exec scripts/synthetix.js --network rinkeby"
+docker build -t <YOUR_DOCKERHUB_HANDLE>/synthetix-bot .
+docker run -e INFURA_KEY=$YOUR_INFURA_KEY -e PK=$YOUR_PRIVATE_KEY -t bh2smith/synthetix-bot:latest "truffle exec scripts/synthetix.js --network rinkeby"
 ```
 
 To avoid including `INFURA_KEY` on every execution, this value can be included/replaced line 16 of [truffle-config.js](truffle-config.js) before building the docker image.
 However, it is important to note that these keys should not be pushed into a public repo.
 
 ### Configuring Kubernetes Deployment
-
-
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 
