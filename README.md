@@ -109,6 +109,33 @@ npx truffle exec scripts/synthetix_interaction.js --network mainnet
 
 Now we are ready to build our liquidity provision bot that mirriors exchange rates from synthetix platform (including fees) and places orders in Gnosis Protocol whenever the price estimation services suggests there might be an overlaping order.
 
+For this we have written the script [scripts/synthetix.js](scripts/synthetix.js) which essentaially performs the following sequence of operations:
+
+- Instantiate a synthetix and batchExchange for the desired network
+- Fetch relevant token infomation for `sUSD` and `sETH`
+- Fetch the exchange rate `sUSD`<->`sETH` from their on chain oracle along with the network fees for trading these tokens
+- Compare the buy and sell `sETH` for `sUSD` prices with thier counter parts on Gnosis Protocol
+- If the price comparisons suggest there is likely trade on and the "bot" has sufficient balance, place order(s) on BatchExchange
+
+All of these facts are documented in the script's logs. To test this, run
+
+```sh
+npx truffle exec scripts/synthetix.js --network rinkeby
+```
+
+Given that there is often no orders between these tokens on rinkeby, you should see the following logs:
+
+```
+Using network 'rinkeby'.
+
+Using account 0x627306090abaB3A6e1400e9345bC60c78a8BEf57
+Oracle sETH Price (in sUSD) 222.04638321287640657
+Gnosis Protocol sell sETH price (in sUSD) Infinity
+Gnosis Protocol buy  sETH price (in sUSD) 0
+Not placing buy  sETH order, our rate of 221.38024406323777 is too low  for exchange.
+Not placing sell sETH order, our rate of 222.15740640448283 is too high for exchange.
+```
+
 ## [Optional] Testing Locally (i.e. in Ganache)
 
 To continue in this direction please checkout the `local_dev` branch of the tutorial repo.
