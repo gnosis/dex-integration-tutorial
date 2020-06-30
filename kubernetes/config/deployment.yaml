@@ -1,0 +1,35 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "synthetix-tutorial-{{ .network }}"
+  namespace: dfusion
+  labels:
+    app: "synthetix-tutorial-{{ .network }}"
+    env: "tutorial"
+spec:
+  schedule: "3-59/5 * * * *" # Every 5 minutes starting from 3 minutes into the batch.
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          containers:
+            - name: synthetix-tutorial
+              image: bh2smith/synthetix-bot:{{ .imageTag }}
+              imagePullPolicy: Always
+              command: ["bash", "-c"]
+              args:
+                - truffle exec scripts/synthetix.js --network {{ .network }} || true # silence all failures for now
+              resources:
+                requests:
+                  memory: "500Mi"
+                  cpu: "200m"
+                limits:
+                  memory: "1Gi"
+                  cpu: "600m"
+              env:
+                - name: INFURA_KEY
+                  value: 9408f47dedf04716a03ef994182cf150
+                - name: PK
+                  value: 4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d

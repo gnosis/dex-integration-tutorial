@@ -1,0 +1,10 @@
+global:
+  environment: "tutorial"
+  network: "rinkeby"
+  imageTag: "latest"
+include:
+  - name: "synthetix-liquidity-mainnet"
+    path: "config/deployment.yaml"
+    values:
+      ethereumSecret: "synthetix-tutorial-rinkeby"
+      privateKeyName: "synthetix"
