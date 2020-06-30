@@ -1,6 +1,6 @@
 const { SynthetixJs } = require("synthetix-js")
 const fetch = require("node-fetch")
-const { getBatchExchange, toWei } = require("./util")
+const { getBatchExchange, toWei, fromWei } = require("./util")
 
 const MIN_SELL_USD = 10
 
@@ -163,7 +163,8 @@ module.exports = async (callback) => {
         `Not placing sell sETH order, our rate of ${ourSellPrice} is too high for exchange.`
       )
     }
-
+    const gasPrices = await (await fetch(gasStationURL[networkId])).json()
+    console.log(`Using "fast" gas price ${fromWei(gasPrices.fast, 9)} GWei`)
     if (orders.length > 0) {
       // Fetch auction index and declare validity interval for orders.
       // Note that order validity interval is inclusive on both sides.
@@ -171,13 +172,9 @@ module.exports = async (callback) => {
       const validFroms = Array(orders.length).fill(batchId)
       const validTos = Array(orders.length).fill(batchId)
 
+      // Query Gnosis Gas Station
       const gasPrices = await (await fetch(gasStationURL[networkId])).json()
-      const scaledGasPrice = parseInt(
-        gasPrices[argv.gasPrice] * argv.gasPriceScale
-      )
-      console.log(
-        `Using current "${argv.gasPrice}" gas price scaled by ${argv.gasPriceScale}: ${scaledGasPrice}`
-      )
+      console.log(`Using "fast" gas price "${fromWei(gasPrices.fast, 6)} GWei`)
       await exchange.placeValidFromOrders(
         orders.map((order) => order.buyToken),
         orders.map((order) => order.sellToken),
@@ -187,7 +184,7 @@ module.exports = async (callback) => {
         orders.map((order) => order.sellAmount),
         {
           from: account,
-          gasPrice: scaledGasPrice,
+          gasPrice: gasPrices.fast,
         }
       )
     }
