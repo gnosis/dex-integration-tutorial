@@ -5,7 +5,7 @@
   "author": "ben@gnosis.io",
   "license": "MIT",
   "dependencies": {
-    "@gnosis.pm/dex-contracts": "^0.4.0",
+    "@gnosis.pm/dex-contracts": "^0.4.1",
     "@gnosis.pm/util-contracts": "^2.0.6",
     "@openzeppelin/contracts": "=2.5.1",
     "@truffle/contract": "^4.2.8",

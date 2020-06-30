@@ -107,6 +107,7 @@ To test our tiny interaction run
 npx truffle exec scripts/synthetix_interaction.js --network mainnet
 ```
 
+Now we are ready to build our liquidity provision bot that mirriors exchange rates from synthetix platform (including fees) and places orders in Gnosis Protocol whenever the price estimation services suggests there might be an overlaping order.
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 

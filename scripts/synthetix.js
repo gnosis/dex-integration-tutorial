@@ -86,7 +86,7 @@ module.exports = async (callback) => {
     )
     console.log("Gnosis Protocol buy  sETH price (in sUSD)", theirBuyPrice)
 
-    // Using synthetix's fees, and formatting their return values with their tools, plus parseFloat.
+    // Using synthetix's fees, and formatting their return values with their tools.
     const sETHTosUSDFee = parseFloat(
       snxjs.utils.formatEther(
         await snxjs.Exchanger.feeRateForExchange(sETH.key, sUSD.key)
