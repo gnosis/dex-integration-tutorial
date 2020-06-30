@@ -163,8 +163,7 @@ module.exports = async (callback) => {
         `Not placing sell sETH order, our rate of ${ourSellPrice} is too high for exchange.`
       )
     }
-    const gasPrices = await (await fetch(gasStationURL[networkId])).json()
-    console.log(`Using "fast" gas price ${fromWei(gasPrices.fast, 9)} GWei`)
+
     if (orders.length > 0) {
       // Fetch auction index and declare validity interval for orders.
       // Note that order validity interval is inclusive on both sides.
