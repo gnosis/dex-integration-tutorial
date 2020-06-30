@@ -115,7 +115,7 @@ For this we have written the script [scripts/synthetix.js](scripts/synthetix.js)
 - Fetch relevant token infomation for `sUSD` and `sETH`
 - Fetch the exchange rate `sUSD`<->`sETH` from their on chain oracle along with the network fees for trading these tokens
 - Compare the buy and sell `sETH` for `sUSD` prices with thier counter parts on Gnosis Protocol
-- If the price comparisons suggest there is likely trade on and the "bot" has sufficient balance, place order(s) on BatchExchange
+- If the price comparisons suggest there is likely trade on and the "bot" has sufficient balance, place order(s) on BatchExchange valid for a single batch.
 
 All of these facts are documented in the script's logs. To test this, run
 
@@ -135,6 +135,26 @@ Gnosis Protocol buy  sETH price (in sUSD) 0
 Not placing buy  sETH order, our rate of 221.38024406323777 is too low  for exchange.
 Not placing sell sETH order, our rate of 222.15740640448283 is too high for exchange.
 ```
+
+Now that we have this bot-script ready for production it remains run this automatically in every batch.
+For this we will publish this project as a docker image and run the script every five minutes as a cronjob on kubernetes.
+
+### Building the Docker image
+
+The docker file is a very simple basic instance of this project having a bash entry point. [Dockerfile](Dockerfile).
+To build the image, from within the project root
+
+```sh
+docker build -t synthetix-bot .
+docker run -e INFURA_KEY=64f4b49c1b2a4af486d92c63556e53f9 -e PK=$YOUR_PRIVATE_KEY -t synthetix-bot:latest "truffle exec scripts/synthetix.js --network rinkeby"
+```
+
+To avoid including `INFURA_KEY` on every execution, this value can be included/replaced line 16 of [truffle-config.js](truffle-config.js) before building the docker image.
+However, it is important to note that these keys should not be pushed into a public repo.
+
+### Configuring Kubernetes Deployment
+
+
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 
