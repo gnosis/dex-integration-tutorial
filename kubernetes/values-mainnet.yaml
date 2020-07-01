@@ -1,10 +1,9 @@
 global:
-    environment: 'tutorial'
-    network: 'mainnet'
-    imageTag: 'latest'
+  environment: "tutorial"
+  network: "mainnet"
+  imageTag: "latest"
 include:
-  - name: 'synthetix-liquidity-mainnet'
-    path: 'config/deployment.yaml'
+  - name: "synthetix-liquidity-mainnet"
+    path: "config/deployment.yaml"
     values:
-      ethereumSecret: 'synthetix-tutorial-mainnet'
-      privateKeyName: 'synthetix'
+      privateKeyName: "synthbot-mainnet"

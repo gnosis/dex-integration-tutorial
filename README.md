@@ -154,6 +154,14 @@ However, it is important to note that these keys should not be pushed into a pub
 
 ### Configuring Kubernetes Deployment
 
+For this section we would like to configure a cronjob to execute our synthetix script from the docker image every 5 minutes (i.e. in each batch auction) at 3 minutes into the batch.
+For a basic guide on kubernetes cronjobs please visit the [cronjob section](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) of Kubernetes Documentation.
+
+Another important point to become familiar with here is that of [secrets](https://kubernetes.io/docs/concepts/configuration/secret/) for which you will want to configure your `INFURA_KEY` and, more importantly, your `PK`.
+
+Alternatively, for the purpose of this tutorial, we have provided a sketch configuration in the `kubernetes` directory.
+Observe that the elements contained in the `env:` section of [deployment.yaml](kubenetes/config/deployment.yaml) are the secrets with names configured appropriately.
+
 ## [Optional] Testing Locally (i.e. in Ganache)
 
 To continue in this direction please checkout the `local_dev` branch of the tutorial repo.

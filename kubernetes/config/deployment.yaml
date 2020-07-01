@@ -30,6 +30,12 @@ spec:
                   cpu: "600m"
               env:
                 - name: INFURA_KEY
-                  value: 9408f47dedf04716a03ef994182cf150
+                  valueFrom:
+                    secretKeyRef:
+                      name: "infura-credentials"
+                      key: project_id
                 - name: PK
-                  value: 4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d
+                  valueFrom:
+                    secretKeyRef:
+                      name: "synthetix-tutorial-{{ .network }}"
+                      key: private_key_{{ .privateKeyName }}
