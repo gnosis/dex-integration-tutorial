@@ -5,7 +5,7 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
 - [Requirements](#requirements)
 - [Interaction with Batch Exchange](#interaction-with-batch-exchange)
   - [Fetch Token Info](#Fetch-Token-Info)
-  - [Deposit and Place Orders](#Deposit-&-Place-Orders)
+  - [Deposit and Place Orders](#Deposit-and-Place-Orders)
 - [Synthetix Liquidity Bot](#synthetix-liquidity-bot)
   - [Building a Docker Image](#building-a-docker-image)
   - [Running the Bot](#running-the-bot)
@@ -98,11 +98,17 @@ truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
 
 This example also demonstrates how we can use `kwargs` to easily pass and parse arguments into our script.
 
-## Deposit & Place Orders
+## Deposit and Place Orders
 
 At this point, we should be easily able to use our existing toolset to script an order placement on `BatchExchange`.
 
-TODO: write deposit and place_order scripts (will need to write amount formatter for ERC20 with special decimals).
+Use the hollow script to write the deposit functionality:
+
+```sh
+cp scripts/hollow_script.js scripts/deposit.js
+```
+
+
 
 ## Synthetix Liquidity Bot
 
