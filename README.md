@@ -4,7 +4,9 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
 
 ## Requirements
 
-- Truffle
+- [Truffle](https://www.trufflesuite.com/docs/truffle/getting-started/installation)
+- [Node](https://nodejs.org/en/)
+- [Yarn](https://yarnpkg.com/) or alternatily you could use the node package manager `npm` included with Node.
 
 ## [Optional] Project Initialization and Network Configuration
 
@@ -17,6 +19,7 @@ truffle init
 yarn add @truffle/contract
 yarn add @gnosis.pm/dex-contracts
 [optional] yarn add @gnosis.pm/util-contracts
+[optional] yarn add @openzeppelin/contracts@2.5.1
 ```
 
 Make sure that you have a valid (truffle configuration)[https://www.trufflesuite.com/docs/truffle/reference/configuration] for the network you intend on interacting with.
@@ -35,15 +38,26 @@ git clone git@github.com:bh2smith/dex-integration-tutorial.git
 yarn install
 ```
 
-This should put us in the same place as has having completed the project initialization steps independantly. We are now prepared to start scripting interactions with the Gnosis Protocol. To test this run the `exchange_interaction` script via
+This should put us in the same place as has having completed the project initialization steps independantly.
+We are now prepared to start scripting interactions with the Gnosis Protocol.
+To test this run the `exchange_interaction` script via
 
 ```sh
 truffle exec scripts/exchange_interaction.js --network rinkeby
 ```
 
-Which simply aquires the BatchExchange contract deployed at the appropriate address and prints the current Batch Index.
+and observe the following logs:
 
-The most important lines used in this script are the by far the import statements.
+```
+Using network 'rinkeby'.
+
+Aquired Batch Exchange 0xC576eA7bd102F7E476368a5E98FA455d1Ea34dE2
+Current Batch 5308007
+```
+
+This script simply aquires the BatchExchange contract deployed at the appropriate network and prints the current batch index.
+
+A few important lines used throughout such integration are are the following import statements used for acquiring the Batch Exchange contract artifacts according to the correct network.
 
 ```js
 const Contract = require("@truffle/contract")
@@ -53,7 +67,106 @@ const BatchExchange = Contract(
 BatchExchange.setProvider(web3.currentProvider)
 ```
 
+These imports have been made more accessible in the form of a function `getBatchExchange` in [scripts/util.js](scripts/util.js) and will be used from now on throughout this tutorial.
 
+Now that we have successfully acquired the BatchExchange contract artifact, we are ready to start making some more involved interactions!
+
+### Fetch Token Info
+
+As a second simple interaction with the exchange, we can fetch token information for those registered. This script requires a few additional dev-tweaks in order to have access to `ECR20Detailed` token contract artifacts.
+
+We will need to install `@openzeppelin/contracts@2.5.1` and import `ERC20Detailed` so that is it included in truffle migrations. To do this from scratch
+
+```sh
+yarn add @openzeppelin/contracts@2.5.1
+```
+
+and create a new file [contracts/Dependencies.sol](contracts/Dependencies.sol) importing `ERC20Detailed` contract artifact. Then run the following script.
+
+```sh
+truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
+```
+
+This example also demonstrates how we can use `kwargs` to easily pass and parse arguments into our script.
+
+## Deposit and Place Orders on Batch Exchange
+
+At this point, we should be easily able to use our existing toolset to script an order placement on `BatchExchange`.
+
+TODO: write deposit and place_order scripts (will need to write amount formatter for ERC20 with special decimals).
+
+## Synthetix Liquidity Bot
+
+In order to demonstrate an integration between two exchanges, we will make an example out of the Synthetix Protocol using their NPM package [synthetix-js](https://www.npmjs.com/package/synthetix-js) whose docs are avaialble [here](https://docs.synthetix.io/libraries/synthetix-js/)
+
+To get started, we construct a simple interaction with their protocol in which we fetch the price `sETH` from their onchain price oracle (chainlink). This interaction is contained within [scripts/synthetix_interaction.js](scripts/synthetix_interaction.js)
+
+To test our tiny interaction run
+
+```sh
+npx truffle exec scripts/synthetix_interaction.js --network mainnet
+```
+
+Now we are ready to build our liquidity provision bot that mirriors exchange rates from synthetix platform (including fees) and places orders in Gnosis Protocol whenever the price estimation services suggests there might be an overlaping order.
+
+For this we have written the script [scripts/synthetix.js](scripts/synthetix.js) which essentaially performs the following sequence of operations:
+
+- Instantiate a synthetix and batchExchange for the desired network
+- Fetch relevant token infomation for `sUSD` and `sETH`
+- Fetch the exchange rate `sUSD`<->`sETH` from their on chain oracle along with the network fees for trading these tokens
+- Compare the buy and sell `sETH` for `sUSD` prices with thier counter parts on Gnosis Protocol
+- If the price comparisons suggest there is likely trade on and the "bot" has sufficient balance, place order(s) on BatchExchange valid for a single batch.
+
+All of these facts are documented in the script's logs. To test this, run
+
+```sh
+npx truffle exec scripts/synthetix.js --network rinkeby
+```
+
+Given that there is often no orders between these tokens on rinkeby, you should see the following logs:
+
+```
+Using network 'rinkeby'.
+
+Using account 0x627306090abaB3A6e1400e9345bC60c78a8BEf57
+Oracle sETH Price (in sUSD) 222.04638321287640657
+Gnosis Protocol sell sETH price (in sUSD) Infinity
+Gnosis Protocol buy  sETH price (in sUSD) 0
+Not placing buy  sETH order, our rate of 221.38024406323777 is too low  for exchange.
+Not placing sell sETH order, our rate of 222.15740640448283 is too high for exchange.
+```
+
+Now that we have this bot-script ready for production it remains run this automatically in every batch.
+For this we will publish this project as a docker image and run the script every five minutes as a cronjob on kubernetes.
+
+### Building the Docker image
+
+The docker file is a very simple basic instance of this project having a bash entry point. [Dockerfile](Dockerfile).
+To build the image, from within the project root
+
+```sh
+docker build -t <YOUR_DOCKERHUB_HANDLE>/synthetix-bot .
+docker run -e INFURA_KEY=$YOUR_INFURA_KEY -e PK=$YOUR_PRIVATE_KEY -t bh2smith/synthetix-bot:latest "truffle exec scripts/synthetix.js --network rinkeby"
+```
+
+To avoid including `INFURA_KEY` on every execution, this value can be included/replaced line 16 of [truffle-config.js](truffle-config.js) before building the docker image.
+However, it is important to note that these keys should not be pushed into a public repo.
+
+### Configuring Kubernetes Deployment
+
+For this section we would like to configure a cronjob to execute our synthetix script from the docker image every 5 minutes (i.e. in each batch auction) at 3 minutes into the batch.
+For a basic guide on kubernetes cronjobs please visit the [cronjob section](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) of Kubernetes Documentation.
+
+Another important point to become familiar with here is that of [secrets](https://kubernetes.io/docs/concepts/configuration/secret/) for which you will want to configure your `INFURA_KEY` and, more importantly, your `PK`.
+
+Alternatively, for the purpose of this tutorial, we have provided a sketch configuration in the `kubernetes` directory.
+Observe that the elements contained in the `env:` section of [deployment.yaml](kubenetes/config/deployment.yaml) are the secrets with names configured appropriately.
+
+TODO - Provide Example commands to set up secrets and deploy pods.
+
+## Uniswap Arbitrage Bot
+
+TODO - gain access to uniswap price feed and place orders on GP when arbitrage exists.
 
 ## [Optional] Testing Locally (i.e. in Ganache)
 

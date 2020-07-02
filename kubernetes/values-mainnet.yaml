@@ -1,0 +1,9 @@
+global:
+  environment: "tutorial"
+  network: "mainnet"
+  imageTag: "latest"
+include:
+  - name: "synthetix-liquidity-mainnet"
+    path: "config/deployment.yaml"
+    values:
+      privateKeyName: "synthbot-mainnet"

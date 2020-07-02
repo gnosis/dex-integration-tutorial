@@ -5,8 +5,13 @@
   "author": "ben@gnosis.io",
   "license": "MIT",
   "dependencies": {
-    "@gnosis.pm/dex-contracts": "^0.3.2",
+    "@gnosis.pm/dex-contracts": "^0.4.1",
     "@gnosis.pm/util-contracts": "^2.0.6",
-    "@truffle/contract": "^4.2.8"
+    "@openzeppelin/contracts": "=2.5.1",
+    "@truffle/contract": "^4.2.8",
+    "synthetix-js": "^2.22.4"
+  },
+  "devDependencies": {
+    "yargs": "^15.3.1"
   }
 }
