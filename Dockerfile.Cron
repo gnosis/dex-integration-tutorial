@@ -1,0 +1,15 @@
+FROM node:10.15-alpine
+
+RUN apk add --no-cache --virtual build-dependencies bash git python make g++ ca-certificates
+
+# Project files
+COPY package.json .
+RUN yarn && yarn global add truffle && yarn cache clean
+
+COPY . .
+
+# Crontab files
+RUN /usr/bin/crontab /crontab.txt
+RUN touch /var/log/script.log
+
+ENTRYPOINT ["crond", "-f"]

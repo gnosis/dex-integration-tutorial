@@ -164,6 +164,33 @@ Observe that the elements contained in the `env:` section of [deployment.yaml](k
 
 TODO - Provide Example commands to set up secrets and deploy pods.
 
+### Running Bot as Cronjob in Docker Image
+
+We can alter the dockerfile from above an include a cron task that runs the script every 5 minutes and funnels the logs into a file.
+
+To build, we use [Dockerfile.Cron](Dockerfile.Cron)
+
+```sh
+docker build -f Dockerfile.Cron --rm -t bh2smith/cron-bot .
+```
+
+and run (in the background) with
+
+```sh
+export NETWORK=rinkeby
+export INFURA_KEY=<your infura key>
+docker run -e NETWORK=$NETWORK -e INFURA_KEY=$INFURA_KEY -t -i bh2smith/cron-bot &
+```
+
+To check the logs of this service, log into the container
+
+```sh
+docker ps
+docker exec -it <CONTAINER ID> bash
+cat /var/log/script.log
+```
+
+
 ## Uniswap Arbitrage Bot
 
 TODO - gain access to uniswap price feed and place orders on GP when arbitrage exists.
