@@ -2,6 +2,13 @@
 
 A lightweight repo demonstrating and guiding on how to minimally integrate with the Gnosis Protocol exchange platform.
 
+- [Requirements](#requirements)
+- [Interaction with Batch Exchange](#interaction-with-batch-exchange)
+- [Synthetix Liquidity Bot](#synthetix-liquidity-bot)
+  - [Building a Docker Image](#building-a-docker-image)
+  - [Running the Bot](#running-the-bot)
+- [Uniswap Integration](#uniswap-integration)
+
 ## Requirements
 
 - [Truffle](https://www.trufflesuite.com/docs/truffle/getting-started/installation)
@@ -29,7 +36,7 @@ Furthermore, you will likely have to provide your own `INFURA_KEY`
 
 Note that, if you plan to be experimenting with a locally hosted development network, you will need to install additional "devDepencencies" to mirgrate the `BatchExchange` Smart Contracts. This will be covered in detail once we have successfully confirmed our ability to interact with the existing mainnet smart contracts.
 
-## First Interaction with Batch Exchange
+## Interaction with Batch Exchange
 
 Assuming you were successful with optionally configuring your own project from the section above, we will continue here from a pre-configured environment obtained and installed as follows:
 
@@ -139,27 +146,27 @@ Not placing sell sETH order, our rate of 222.15740640448283 is too high for exch
 Now that we have this bot-script ready for production it remains run this automatically in every batch.
 For this we will publish this project as a docker image and run the script every five minutes as a cronjob on kubernetes.
 
-### Building the Docker image
+### Building a Docker Image
 
 The docker file is a very simple basic instance of this project having a bash entry point. [Dockerfile](Dockerfile).
 To build the image, from within the project root
 
 ```sh
 docker build -t <YOUR_DOCKERHUB_HANDLE>/synthetix-bot .
-docker run -e INFURA_KEY=$YOUR_INFURA_KEY -e PK=$YOUR_PRIVATE_KEY -t bh2smith/synthetix-bot:latest "truffle exec scripts/synthetix.js --network rinkeby"
+docker run -e INFURA_KEY=$YOUR_INFURA_KEY -e PK=$YOUR_PRIVATE_KEY -t <YOUR_DOCKERHUB_HANDLE>/synthetix-bot:latest "truffle exec scripts/synthetix.js --network rinkeby"
 ```
 
 To avoid including `INFURA_KEY` on every execution, this value can be included/replaced line 16 of [truffle-config.js](truffle-config.js) before building the docker image.
 However, it is important to note that these keys should not be pushed into a public repo.
 
-### Running the Bot as Cronjob
+### Running the Bot
 
 At this point, you are now ready to deploy your liquidity bot. This is easily done by running our script in a crontab every five minutes at, say, the 3 minute mark of each batch.
 Although we will not provide any instructions for deployment here, there is a sample [crontab.txt](contab.txt) and slightly altered [Dockerfile](Dockerfile.Cron) that can be used to run the job inside a container.
 
 Alternatively, see the kubernetes directory here for a mock deployment configuration.
 
-## Uniswap Integration Example
+## Uniswap Integration
 
 TODO - gain access to uniswap price feed and place orders on GP when arbitrage exists.
 
