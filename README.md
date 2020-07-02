@@ -7,7 +7,9 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
   - [Fetch Token Info](#Fetch-Token-Info)
   - [Deposit and Place Orders](#Deposit-and-Place-Orders)
 - [Synthetix Liquidity Bot](#synthetix-liquidity-bot)
-  - [Building a Docker Image](#building-a-docker-image)
+  - [Getting Started](#Getting-Started)
+  - [Write the Script](#Write-the-Script)
+  - [Build a Docker Image](#build-a-docker-image)
   - [Running the Bot](#running-the-bot)
 - [Uniswap Integration](#uniswap-integration)
 
@@ -108,11 +110,11 @@ Use the hollow script to write the deposit functionality:
 cp scripts/hollow_script.js scripts/deposit.js
 ```
 
-
-
 ## Synthetix Liquidity Bot
 
 In order to demonstrate an integration between two exchanges, we will make an example out of the Synthetix Protocol using their NPM package [synthetix-js](https://www.npmjs.com/package/synthetix-js) whose docs are avaialble [here](https://docs.synthetix.io/libraries/synthetix-js/)
+
+### Getting Started
 
 To get started, we construct a simple interaction with their protocol in which we fetch the price `sETH` from their onchain price oracle (chainlink). This interaction is contained within [scripts/synthetix_interaction.js](scripts/synthetix_interaction.js)
 
@@ -121,6 +123,8 @@ To test our tiny interaction run
 ```sh
 npx truffle exec scripts/synthetix_interaction.js --network mainnet
 ```
+
+### Write the Script
 
 Now we are ready to build our liquidity provision bot that mirriors exchange rates from synthetix platform (including fees) and places orders in Gnosis Protocol whenever the price estimation services suggests there might be an overlaping order.
 
@@ -154,7 +158,7 @@ Not placing sell sETH order, our rate of 222.15740640448283 is too high for exch
 Now that we have this bot-script ready for production it remains run this automatically in every batch.
 For this we will publish this project as a docker image and run the script every five minutes as a cronjob on kubernetes.
 
-### Building a Docker Image
+### Build a Docker Image
 
 The docker file is a very simple basic instance of this project having a bash entry point. [Dockerfile](Dockerfile).
 To build the image, from within the project root
