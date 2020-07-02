@@ -152,46 +152,14 @@ docker run -e INFURA_KEY=$YOUR_INFURA_KEY -e PK=$YOUR_PRIVATE_KEY -t bh2smith/sy
 To avoid including `INFURA_KEY` on every execution, this value can be included/replaced line 16 of [truffle-config.js](truffle-config.js) before building the docker image.
 However, it is important to note that these keys should not be pushed into a public repo.
 
-### Configuring Kubernetes Deployment
+### Running the Bot as Cronjob
 
-For this section we would like to configure a cronjob to execute our synthetix script from the docker image every 5 minutes (i.e. in each batch auction) at 3 minutes into the batch.
-For a basic guide on kubernetes cronjobs please visit the [cronjob section](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) of Kubernetes Documentation.
+At this point, you are now ready to deploy your liquidity bot. This is easily done by running our script in a crontab every five minutes at, say, the 3 minute mark of each batch.
+Although we will not provide any instructions for deployment here, there is a sample [crontab.txt](contab.txt) and slightly altered [Dockerfile](Dockerfile.Cron) that can be used to run the job inside a container.
 
-Another important point to become familiar with here is that of [secrets](https://kubernetes.io/docs/concepts/configuration/secret/) for which you will want to configure your `INFURA_KEY` and, more importantly, your `PK`.
+Alternatively, see the kubernetes directory here for a mock deployment configuration.
 
-Alternatively, for the purpose of this tutorial, we have provided a sketch configuration in the `kubernetes` directory.
-Observe that the elements contained in the `env:` section of [deployment.yaml](kubenetes/config/deployment.yaml) are the secrets with names configured appropriately.
-
-TODO - Provide Example commands to set up secrets and deploy pods.
-
-### Running Bot as Cronjob in Docker Image
-
-We can alter the dockerfile from above an include a cron task that runs the script every 5 minutes and funnels the logs into a file.
-
-To build, we use [Dockerfile.Cron](Dockerfile.Cron)
-
-```sh
-docker build -f Dockerfile.Cron --rm -t bh2smith/cron-bot .
-```
-
-and run (in the background) with
-
-```sh
-export NETWORK=rinkeby
-export INFURA_KEY=<your infura key>
-docker run -e NETWORK=$NETWORK -e INFURA_KEY=$INFURA_KEY -t -i bh2smith/cron-bot &
-```
-
-To check the logs of this service, log into the container
-
-```sh
-docker ps
-docker exec -it <CONTAINER ID> bash
-cat /var/log/script.log
-```
-
-
-## Uniswap Arbitrage Bot
+## Uniswap Integration Example
 
 TODO - gain access to uniswap price feed and place orders on GP when arbitrage exists.
 
