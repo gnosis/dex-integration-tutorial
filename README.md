@@ -162,6 +162,12 @@ Another important point to become familiar with here is that of [secrets](https:
 Alternatively, for the purpose of this tutorial, we have provided a sketch configuration in the `kubernetes` directory.
 Observe that the elements contained in the `env:` section of [deployment.yaml](kubenetes/config/deployment.yaml) are the secrets with names configured appropriately.
 
+TODO - Provide Example commands to set up secrets and deploy pods.
+
+## Uniswap Arbitrage Bot
+
+TODO - gain access to uniswap price feed and place orders on GP when arbitrage exists.
+
 ## [Optional] Testing Locally (i.e. in Ganache)
 
 To continue in this direction please checkout the `local_dev` branch of the tutorial repo.
