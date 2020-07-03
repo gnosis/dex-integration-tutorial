@@ -3,6 +3,7 @@
 A lightweight repo demonstrating and guiding on how to minimally integrate with the Gnosis Protocol exchange platform.
 
 - [Requirements](#requirements)
+- [[Optional] Project Initialization and Network Configuration](#Project-Initialization-and-Network-Configuration)
 - [Interaction with Batch Exchange](#interaction-with-batch-exchange)
   - [Fetch Token Info](#Fetch-Token-Info)
   - [Deposit and Place Orders](#Deposit-and-Place-Orders)
@@ -12,6 +13,7 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
   - [Build a Docker Image](#build-a-docker-image)
   - [Running the Bot](#running-the-bot)
 - [Uniswap Integration](#uniswap-integration)
+- [[Optional] Testing Locally](#Testing-Locally)
 
 ## Requirements
 
@@ -19,7 +21,7 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
 - [Node](https://nodejs.org/en/)
 - [Yarn](https://yarnpkg.com/) or alternatily you could use the node package manager `npm` included with Node.
 
-## [Optional] Project Initialization and Network Configuration
+## Project Initialization and Network Configuration
 
 This section is intended to be a first step when building a new project from scratch. If you would prefer to start from a preconfigured environment, feel free to skip ahead to the next section.
 
@@ -100,7 +102,7 @@ truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
 
 This example also demonstrates how we can use `kwargs` to easily pass and parse arguments into our script.
 
-## Deposit and Place Orders
+### Deposit, Withdraw and Place Orders
 
 At this point, we should be easily able to use our existing toolset to script an order placement on `BatchExchange`.
 
@@ -182,7 +184,7 @@ Alternatively, see the kubernetes directory here for a mock deployment configura
 
 TODO - gain access to uniswap price feed and place orders on GP when arbitrage exists.
 
-## [Optional] Testing Locally (i.e. in Ganache)
+## Testing Locally
 
 To continue in this direction please checkout the `local_dev` branch of the tutorial repo.
 
