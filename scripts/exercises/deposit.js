@@ -1,6 +1,4 @@
-const { getBatchExchange, toWei } = require("../util")
-const { fetchTokenInfoFromExchange } = require("@gnosis.pm/dex-contracts")
-const ERC20 = artifacts.require("ERC20Detailed")
+const { exchangeAccountTokenAmount } = require("./preamble")
 
 const argv = require("yargs")
   .option("tokenId", {
@@ -16,27 +14,21 @@ const argv = require("yargs")
 
 module.exports = async (callback) => {
   try {
-    const exchange = await getBatchExchange(web3)
-    console.log("Acquired Exchange", exchange.address)
+    const [exchange, account, token, amount] = await exchangeAccountTokenAmount(
+      web3,
+      artifacts,
+      argv.tokenId,
+      argv.amount
+    )
 
-    const depositor = (await web3.eth.getAccounts())[0]
-    console.log(`Using account ${depositor}`)
-    const tokenInfo = (
-      await fetchTokenInfoFromExchange(exchange, [argv.tokenId], artifacts)
-    ).get(argv.tokenId)
-    console.log("Deposit Token", tokenInfo)
-
-    const token = await ERC20.at(tokenInfo.address)
-    const amount = toWei(argv.amount, tokenInfo.decimals)
-
-    const balance = await token.balanceOf(depositor)
+    const balance = await token.instance.balanceOf(account)
     if (balance.lt(amount)) {
       callback(
         `Error: Insufficient funds - ${balance.toString()} < ${amount.toString()}`
       )
     }
 
-    const allowance = await token.allowance(depositor, exchange.address)
+    const allowance = await token.instance.allowance(account, exchange.address)
     if (allowance.lt(amount)) {
       console.log(`Approving Exchange for amount ${amount.toString()}`)
       await token.approve(exchange.address, amount, {
@@ -44,12 +36,12 @@ module.exports = async (callback) => {
       })
     }
 
-    console.log(`Depositing ${argv.amount} ${tokenInfo.symbol} in Exchange`)
-    await exchange.deposit(token.address, amount, { from: depositor })
-    const tradeable_at = (
-      await exchange.getPendingDeposit(depositor, token.address)
+    console.log(`Depositing ${argv.amount} ${token.symbol} in Exchange`)
+    await exchange.deposit(token.address, amount, { from: account })
+    const tradableAt = (
+      await exchange.getPendingDeposit(account, token.address)
     )[1]
-    console.log(`Deposit successful! Can be traded as of batch ${tradeable_at}`)
+    console.log(`Deposit successful and tradable as of batch ${tradableAt}`)
     callback()
   } catch (error) {
     callback(error)
