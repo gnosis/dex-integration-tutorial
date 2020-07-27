@@ -123,7 +123,6 @@ cp scripts/hollow_script.js scripts/deposit.js
 
 ## Synthetix Liquidity Bot
 
-< we can keep it, but I think the interest in running this bot is quite low from the community. Personally, I would remove it to keep maintaince low.>
 In order to demonstrate an integration between two exchanges, we will make an example out of the Synthetix Protocol using their NPM package [synthetix-js](https://www.npmjs.com/package/synthetix-js) whose docs are avaialble [here](https://docs.synthetix.io/libraries/synthetix-js/)
 
 ### Getting Started
