@@ -48,15 +48,24 @@ Assuming you were successful with optionally configuring your own project from t
 
 ```sh
 git clone git@github.com:bh2smith/dex-integration-tutorial.git
-yarn install
+cd dex-integration-tutorial
+yarn
 ```
 
 This should put us in the same place as has having completed the project initialization steps independantly.
 We are now prepared to start scripting interactions with the Gnosis Protocol.
 To test this run the `exchange_interaction` script via
 
+Note that before attempting to execute any of these truffle scripts, you will have to export your own `INFURA_KEY`!
+
 ```sh
-truffle exec scripts/exchange_interaction.js --network rinkeby
+export INFURA_KEY=<your infura key>
+```
+
+For less repitiion, this can also be included directly in the truffle configuration file at [line 17](https://github.com/bh2smith/dex-integration-tutorial/blob/44320ed3345ddb72ea5f0884460e8e1789ad48fe/truffle-config.js#L17). Just replace the existing one after the `||`.
+
+```sh
+npx truffle exec scripts/exchange_interaction.js --network rinkeby
 ```
 
 and observe the following logs:
@@ -97,7 +106,7 @@ yarn add @openzeppelin/contracts@2.5.1
 and create a new file [contracts/Dependencies.sol](contracts/Dependencies.sol) importing `ERC20Detailed` contract artifact. Then run the following script.
 
 ```sh
-truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
+npx truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
 ```
 
 This example also demonstrates how we can use `kwargs` to easily pass and parse arguments into our script.
@@ -123,7 +132,7 @@ To get started, we construct a simple interaction with their protocol in which w
 To test our tiny interaction run
 
 ```sh
-npx truffle exec scripts/synthetix_interaction.js --network mainnet
+npx truffle exec scripts/synthetix_interaction.js --network rinkeby
 ```
 
 ### Write the Script
