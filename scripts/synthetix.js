@@ -109,27 +109,27 @@ module.exports = async (callback) => {
       console.log(
         `Placing an order to buy sETH at ${ourBuyPrice}, but verifying sUSD balance first`
       )
-      // const sUSDBalance = await batchExchange.getBalance(account, sUSD.address)
-      // if (sUSDBalance.gte(minSellsUSD)) {
-      const {
-        base: sellSUSDAmount,
-        quote: buyETHAmount,
-      } = getUnlimitedOrderAmounts(
-        1 / ourBuyPrice,
-        sETH.decimals,
-        sUSD.decimals
-      )
-      orders.push({
-        buyToken: sETH.exchangeId,
-        sellToken: sUSD.exchangeId,
-        buyAmount: buyETHAmount,
-        sellAmount: sellSUSDAmount,
-      })
-      // } else {
-      //   console.log(
-      //     `Warning: Insufficient sUSD (${sUSDBalance.toString()} < ${minSellsUSD.toString()}) for order placement.`
-      //   )
-      // }
+      const sUSDBalance = await batchExchange.getBalance(account, sUSD.address)
+      if (sUSDBalance.gte(minSellsUSD)) {
+        const {
+          base: sellSUSDAmount,
+          quote: buyETHAmount,
+        } = getUnlimitedOrderAmounts(
+          1 / ourBuyPrice,
+          sETH.decimals,
+          sUSD.decimals
+        )
+        orders.push({
+          buyToken: sETH.exchangeId,
+          sellToken: sUSD.exchangeId,
+          buyAmount: buyETHAmount,
+          sellAmount: sellSUSDAmount,
+        })
+      } else {
+        console.log(
+          `Warning: Insufficient sUSD (${sUSDBalance.toString()} < ${minSellsUSD.toString()}) for order placement.`
+        )
+      }
     } else {
       console.log(
         `Not placing buy  sETH order, our rate of ${ourBuyPrice} is too low  for exchange.`
