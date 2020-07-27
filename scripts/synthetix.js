@@ -1,5 +1,6 @@
 const { SynthetixJs } = require("synthetix-js")
 const fetch = require("node-fetch")
+const { getUnlimitedOrderAmounts } = require("@gnosis.pm/dex-contracts")
 const { getBatchExchange, toWei, fromWei } = require("./util")
 
 const MIN_SELL_USD = 10
@@ -108,7 +109,7 @@ module.exports = async (callback) => {
       console.log(
         `Placing an order to buy sETH at ${ourBuyPrice}, but verifying sUSD balance first`
       )
-      const sUSDBalance = await exchange.getBalance(account, sUSD.address)
+      const sUSDBalance = await batchExchange.getBalance(account, sUSD.address)
       if (sUSDBalance.gte(minSellsUSD)) {
         const {
           base: sellSUSDAmount,
@@ -141,7 +142,7 @@ module.exports = async (callback) => {
       console.log(
         `Placing an order to sell sETH at ${ourSellPrice}, but verifying sETH balance first`
       )
-      const sETHBalance = await exchange.getBalance(account, sETH.address)
+      const sETHBalance = await batchExchange.getBalance(account, sETH.address)
       if (sETHBalance.gte(minSellsETH)) {
         const {
           base: sellETHAmount,
@@ -167,7 +168,7 @@ module.exports = async (callback) => {
     if (orders.length > 0) {
       // Fetch auction index and declare validity interval for orders.
       // Note that order validity interval is inclusive on both sides.
-      const batchId = (await exchange.getCurrentBatchId.call()).toNumber()
+      const batchId = (await batchExchange.getCurrentBatchId.call()).toNumber()
       const validFroms = Array(orders.length).fill(batchId)
       const validTos = Array(orders.length).fill(batchId)
 
