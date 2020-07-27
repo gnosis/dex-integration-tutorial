@@ -56,11 +56,18 @@ This should put us in the same place as has having completed the project initial
 We are now prepared to start scripting interactions with the Gnosis Protocol.
 To test this run the `exchange_interaction` script via
 
+Note that before attempting to execute any of these truffle scripts, you will have to export your own `INFURA_KEY`!
+
+```sh
+export INFURA_KEY=<your infura key>
+```
+
+For less repitiion, this can also be included directly in the truffle configuration file at [line 17](https://github.com/bh2smith/dex-integration-tutorial/blob/44320ed3345ddb72ea5f0884460e8e1789ad48fe/truffle-config.js#L17). Just replace the existing one after the `||`.
+
 ```sh
 npx truffle exec scripts/exchange_interaction.js --network rinkeby
 ```
 
-< here I needed to export INFURA_KEY=, before I could go on>
 and observe the following logs:
 
 ```
@@ -75,11 +82,11 @@ This script simply aquires the BatchExchange contract deployed at the appropriat
 A few important lines used throughout such integration are are the following import statements used for acquiring the Batch Exchange contract artifacts according to the correct network.
 
 ```js
-const Contract = require("@truffle/contract");
+const Contract = require("@truffle/contract")
 const BatchExchange = Contract(
   require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-);
-BatchExchange.setProvider(web3.currentProvider);
+)
+BatchExchange.setProvider(web3.currentProvider)
 ```
 
 These imports have been made more accessible in the form of a function `getBatchExchange` in [scripts/util.js](scripts/util.js) and will be used from now on throughout this tutorial.
@@ -114,8 +121,6 @@ Use the hollow script to write the deposit functionality:
 cp scripts/hollow_script.js scripts/deposit.js
 ```
 
-< cool, i like that >
-
 ## Synthetix Liquidity Bot
 
 < we can keep it, but I think the interest in running this bot is quite low from the community. Personally, I would remove it to keep maintaince low.>
@@ -128,7 +133,7 @@ To get started, we construct a simple interaction with their protocol in which w
 To test our tiny interaction run
 
 ```sh
-npx truffle exec scripts/synthetix_interaction.js --network rinkeby?
+npx truffle exec scripts/synthetix_interaction.js --network rinkeby
 ```
 
 ### Write the Script
