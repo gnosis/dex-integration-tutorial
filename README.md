@@ -48,7 +48,8 @@ Assuming you were successful with optionally configuring your own project from t
 
 ```sh
 git clone git@github.com:bh2smith/dex-integration-tutorial.git
-yarn install
+cd dex-integration-tutorial
+yarn
 ```
 
 This should put us in the same place as has having completed the project initialization steps independantly.
@@ -56,9 +57,10 @@ We are now prepared to start scripting interactions with the Gnosis Protocol.
 To test this run the `exchange_interaction` script via
 
 ```sh
-truffle exec scripts/exchange_interaction.js --network rinkeby
+npx truffle exec scripts/exchange_interaction.js --network rinkeby
 ```
 
+< here I needed to export INFURA_KEY=, before I could go on>
 and observe the following logs:
 
 ```
@@ -73,11 +75,11 @@ This script simply aquires the BatchExchange contract deployed at the appropriat
 A few important lines used throughout such integration are are the following import statements used for acquiring the Batch Exchange contract artifacts according to the correct network.
 
 ```js
-const Contract = require("@truffle/contract")
+const Contract = require("@truffle/contract");
 const BatchExchange = Contract(
   require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-)
-BatchExchange.setProvider(web3.currentProvider)
+);
+BatchExchange.setProvider(web3.currentProvider);
 ```
 
 These imports have been made more accessible in the form of a function `getBatchExchange` in [scripts/util.js](scripts/util.js) and will be used from now on throughout this tutorial.
@@ -97,7 +99,7 @@ yarn add @openzeppelin/contracts@2.5.1
 and create a new file [contracts/Dependencies.sol](contracts/Dependencies.sol) importing `ERC20Detailed` contract artifact. Then run the following script.
 
 ```sh
-truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
+npx truffle exec scripts/exchange_tokens.js --tokenIds 1,2 --network rinkeby
 ```
 
 This example also demonstrates how we can use `kwargs` to easily pass and parse arguments into our script.
@@ -112,8 +114,11 @@ Use the hollow script to write the deposit functionality:
 cp scripts/hollow_script.js scripts/deposit.js
 ```
 
+< cool, i like that >
+
 ## Synthetix Liquidity Bot
 
+< we can keep it, but I think the interest in running this bot is quite low from the community. Personally, I would remove it to keep maintaince low.>
 In order to demonstrate an integration between two exchanges, we will make an example out of the Synthetix Protocol using their NPM package [synthetix-js](https://www.npmjs.com/package/synthetix-js) whose docs are avaialble [here](https://docs.synthetix.io/libraries/synthetix-js/)
 
 ### Getting Started
@@ -123,7 +128,7 @@ To get started, we construct a simple interaction with their protocol in which w
 To test our tiny interaction run
 
 ```sh
-npx truffle exec scripts/synthetix_interaction.js --network mainnet
+npx truffle exec scripts/synthetix_interaction.js --network rinkeby?
 ```
 
 ### Write the Script
