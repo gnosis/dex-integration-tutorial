@@ -24,7 +24,7 @@ let additionalNetwork = process.env.ADDITIONAL_NETWORK
   : null
 // Solc
 let solcUseDocker = process.env.SOLC_USE_DOCKER === "true" || false
-let solcVersion = "0.5.6"
+let solcVersion = "0.5.7"
 
 module.exports = {
   ...truffleConfig({
