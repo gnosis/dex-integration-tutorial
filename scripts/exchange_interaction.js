@@ -1,8 +1,4 @@
-const Contract = require("@truffle/contract")
-const BatchExchange = Contract(
-  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-)
-BatchExchange.setProvider(web3.currentProvider)
+const BatchExchange = artifacts.require("BatchExchange")
 
 module.exports = async (callback) => {
   try {

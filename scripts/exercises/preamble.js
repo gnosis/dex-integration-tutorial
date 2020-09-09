@@ -1,4 +1,5 @@
-const { getBatchExchange, toWei } = require("../util")
+const BatchExchange = artifacts.require("BatchExchange")
+const { toWei } = require("../util")
 const { fetchTokenInfoFromExchange } = require("@gnosis.pm/dex-contracts")
 
 const exchangeAccountTokenAmount = async function (
@@ -8,7 +9,7 @@ const exchangeAccountTokenAmount = async function (
   amount
 ) {
   const ERC20 = artifacts.require("ERC20Detailed")
-  const exchange = await getBatchExchange(web3)
+  const exchange = BatchExchange.deployed()
   console.log("Acquired Exchange", exchange.address)
   const account = (await web3.eth.getAccounts())[0]
   console.log("Using Account    ", account)

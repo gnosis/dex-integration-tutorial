@@ -1,8 +1,8 @@
-const { getBatchExchange } = require("./util")
+const BatchExchange = artifacts.require("BatchExchange")
 
 module.exports = async (callback) => {
   try {
-    const exchange = await getBatchExchange(web3)
+    const exchange = await BatchExchange.deployed()
     console.log("Aquired Batch Exchange", exchange.address)
 
     // Insert your code here!

@@ -29,16 +29,25 @@ This section is intended to be a first step when building a new project from scr
 mkdir <project_title>
 cd project_title
 truffle init
-yarn add @truffle/contract
 yarn add @gnosis.pm/dex-contracts
 [optional] yarn add @gnosis.pm/util-contracts
 [optional] yarn add @openzeppelin/contracts@2.5.1
 ```
 
+With `dex-contracts` npm package installed, you will need to copy the BatchExchange artifact into your local build folder.
+
+This can be done with the following command
+
+```sh
+cp ./node_modules/@gnosis.pm/dex-contracts/build/contracts/BatchExchange.json ./build/contracts
+```
+
+For convienince, we have included this in the script portion of [package.json](./package.json) as the yarn command `copy-artifacts` along with a couple of other helpfull scripts (`build` and `compile`) if you plan to write any smart contracts as part of your integration.
+
 Make sure that you have a valid (truffle configuration)[https://www.trufflesuite.com/docs/truffle/reference/configuration] for the network you intend on interacting with.
 We will be using the common `truffle-config.js` found in most, if not all, gnosis smart contract projects.
 In order to use the common gnosis truffle configuration, you will need to install the optional package `@gnosis.pm/util-contracts` listed above.
-Furthermore, you will likely have to provide your own `INFURA_KEY`
+Furthermore, you will have to provide your own `INFURA_KEY`.
 
 Note that, if you plan to be experimenting with a locally hosted development network, you will need to install additional "devDepencencies" to mirgrate the `BatchExchange` Smart Contracts. This will be covered in detail once we have successfully confirmed our ability to interact with the existing mainnet smart contracts.
 
@@ -54,15 +63,13 @@ yarn
 
 This should put us in the same place as has having completed the project initialization steps independantly.
 We are now prepared to start scripting interactions with the Gnosis Protocol.
-To test this run the `exchange_interaction` script via
+To test this run the `exchange_interaction` script via the command below.
 
 Note that before attempting to execute any of these truffle scripts, you will have to export your own `INFURA_KEY`!
 
 ```sh
 export INFURA_KEY=<your infura key>
 ```
-
-For less repitiion, this can also be included directly in the truffle configuration file at [line 17](https://github.com/bh2smith/dex-integration-tutorial/blob/44320ed3345ddb72ea5f0884460e8e1789ad48fe/truffle-config.js#L17). Just replace the existing one after the `||`.
 
 ```sh
 npx truffle exec scripts/exchange_interaction.js --network rinkeby
@@ -74,22 +81,12 @@ and observe the following logs:
 Using network 'rinkeby'.
 
 Aquired Batch Exchange 0xC576eA7bd102F7E476368a5E98FA455d1Ea34dE2
-Current Batch 5308007
+Current Batch XXXXXXX
 ```
 
 This script simply aquires the BatchExchange contract deployed at the appropriate network and prints the current batch index.
 
 A few important lines used throughout such integration are are the following import statements used for acquiring the Batch Exchange contract artifacts according to the correct network.
-
-```js
-const Contract = require("@truffle/contract")
-const BatchExchange = Contract(
-  require("@gnosis.pm/dex-contracts/build/contracts/BatchExchange")
-)
-BatchExchange.setProvider(web3.currentProvider)
-```
-
-These imports have been made more accessible in the form of a function `getBatchExchange` in [scripts/util.js](scripts/util.js) and will be used from now on throughout this tutorial.
 
 Now that we have successfully acquired the BatchExchange contract artifact, we are ready to start making some more involved interactions!
 

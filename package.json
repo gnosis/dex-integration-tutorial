@@ -4,11 +4,21 @@
   "description": "An tiny integration example demonstrating how to place spread orders on Gnosis Protocol from an external price feed",
   "author": "ben@gnosis.io",
   "license": "MIT",
+  "keywords": [
+    "Gnosis Protocol",
+    "Integration",
+    "Tutorial"
+  ],
+  "scripts": {
+    "build": "yarn compile && yarn copy-artifacts",
+    "compile": "truffle compile",
+    "copy-artifacts": "cp ./node_modules/@gnosis.pm/dex-contracts/build/contracts/BatchExchange.json ./build/contracts"
+  },
   "dependencies": {
-    "@gnosis.pm/dex-contracts": "^0.4.1",
+    "@truffle/artifactor": "^4.0.70",
+    "@gnosis.pm/dex-contracts": "^0.4.2",
     "@gnosis.pm/util-contracts": "^2.0.6",
     "@openzeppelin/contracts": "=2.5.1",
-    "@truffle/contract": "^4.2.14",
     "synthetix-js": "=2.26.1"
   },
   "devDependencies": {
