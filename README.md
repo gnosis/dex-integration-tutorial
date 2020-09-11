@@ -43,6 +43,7 @@ cp ./node_modules/@gnosis.pm/dex-contracts/build/contracts/BatchExchange.json ./
 ```
 
 For convienince, we have included this in the script portion of [package.json](./package.json) as the yarn command `copy-artifacts` along with a couple of other helpfull scripts (`build` and `compile`) if you plan to write any smart contracts as part of your integration.
+With these commands, you can initialize this project (at any time) by running `yarn build`.
 
 Make sure that you have a valid (truffle configuration)[https://www.trufflesuite.com/docs/truffle/reference/configuration] for the network you intend on interacting with.
 We will be using the common `truffle-config.js` found in most, if not all, gnosis smart contract projects.
@@ -58,7 +59,8 @@ Assuming you were successful with optionally configuring your own project from t
 ```sh
 git clone git@github.com:bh2smith/dex-integration-tutorial.git
 cd dex-integration-tutorial
-yarn
+yarn install
+yarn build
 ```
 
 This should put us in the same place as has having completed the project initialization steps independantly.

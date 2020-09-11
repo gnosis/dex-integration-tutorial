@@ -59,8 +59,8 @@ module.exports = async (callback) => {
 
     // Fetch relevant token details.
     const [sETH, sUSD] = await Promise.all([
-      tokenDetails(snxjs, batchExchange, "sETH"),
-      tokenDetails(snxjs, batchExchange, "sUSD"),
+      tokenDetails(snxjs, exchange, "sETH"),
+      tokenDetails(snxjs, exchange, "sUSD"),
     ])
 
     // Compute Rates and Fees based on price of sETH.

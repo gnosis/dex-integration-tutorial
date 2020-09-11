@@ -22,8 +22,15 @@ const fromWei = function (value, decimals) {
   return new BN(res.toString())
 }
 
+const fromWeiString = function (value, decimals) {
+  let baseUnit = new BigNumber(`10`).pow(decimals)
+  const res = new BigNumber(value) / baseUnit
+  return res.toString()
+}
+
 module.exports = {
   getSynthetixExchange,
   toWei,
   fromWei,
+  fromWeiString,
 }
