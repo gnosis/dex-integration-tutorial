@@ -1,7 +1,8 @@
+const BatchExchange = artifacts.require("BatchExchange")
 const { SynthetixJs } = require("synthetix-js")
 const fetch = require("node-fetch")
 const { getUnlimitedOrderAmounts } = require("@gnosis.pm/dex-contracts")
-const { getBatchExchange, toWei, fromWei } = require("./util")
+const { toWei, fromWei } = require("./util")
 
 const MIN_SELL_USD = 10
 
@@ -54,12 +55,12 @@ module.exports = async (callback) => {
     const account = (await web3.eth.getAccounts())[0]
     console.log("Using account", account)
     const snxjs = new SynthetixJs({ networkId: networkId })
-    const batchExchange = await getBatchExchange(web3)
+    const exchange = await BatchExchange.deployed()
 
     // Fetch relevant token details.
     const [sETH, sUSD] = await Promise.all([
-      tokenDetails(snxjs, batchExchange, "sETH"),
-      tokenDetails(snxjs, batchExchange, "sUSD"),
+      tokenDetails(snxjs, exchange, "sETH"),
+      tokenDetails(snxjs, exchange, "sUSD"),
     ])
 
     // Compute Rates and Fees based on price of sETH.

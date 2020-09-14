@@ -1,5 +1,4 @@
-const { SynthetixJs } = require("synthetix-js")
-const { toWei, fromWei, getSynthetixExchange } = require("./util")
+const { fromWeiString, getSynthetixExchange } = require("./util")
 
 module.exports = async (callback) => {
   try {
@@ -14,7 +13,7 @@ module.exports = async (callback) => {
     const exchangeRate = await snxjs.ExchangeRates.rateForCurrency(sETHKey)
 
     // This value in in Wei, so we convert to human readable format
-    const ethPrice = fromWei(exchangeRate, await snxjs.sETH.decimals())
+    const ethPrice = fromWeiString(exchangeRate, await snxjs.sETH.decimals())
     console.log("Current Price of sETH (in sUSD)", ethPrice)
 
     callback()

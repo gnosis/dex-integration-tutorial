@@ -1,4 +1,4 @@
-const { getBatchExchange } = require("./util")
+const BatchExchange = artifacts.require("BatchExchange")
 const { fetchTokenInfoFromExchange } = require("@gnosis.pm/dex-contracts")
 
 const argv = require("yargs")
@@ -14,7 +14,7 @@ const argv = require("yargs")
 
 module.exports = async (callback) => {
   try {
-    const exchange = await getBatchExchange(web3)
+    const exchange = await BatchExchange.deployed()
 
     const numTokens = (await exchange.numTokens.call()).toNumber()
     console.log(`Exchange has ${numTokens} registered tokens`)
