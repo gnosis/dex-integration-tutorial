@@ -19,7 +19,7 @@ A lightweight repo demonstrating and guiding on how to minimally integrate with 
 
 - [Truffle](https://www.trufflesuite.com/docs/truffle/getting-started/installation)
 - [Node](https://nodejs.org/en/)
-- [Yarn](https://yarnpkg.com/) or alternatily you could use the node package manager `npm` included with Node.
+- [Yarn](https://yarnpkg.com/) or alternatively you could use the node package manager `npm` included with Node.
 
 ## Project Initialization and Network Configuration
 
