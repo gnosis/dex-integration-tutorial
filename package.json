@@ -17,7 +17,7 @@
   "dependencies": {
     "@gnosis.pm/dex-contracts": "^0.5.0",
     "@gnosis.pm/util-contracts": "^2.0.6",
-    "@openzeppelin/contracts": "=2.5.1",
+    "@openzeppelin/contracts": "=4.4.2",
     "@truffle/artifactor": "^4.0.70",
     "synthetix-js": "=2.30.1"
   },
